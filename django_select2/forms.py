@@ -101,9 +101,9 @@ class Select2Mixin(object):
             https://docs.djangoproject.com/en/1.8/topics/forms/media/#media-as-a-dynamic-property
         """
         return forms.Media(
-            js=('//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js',
+            js=(settings.SELECT2_JS_URL,
                 'django_select2/django_select2.js'),
-            css={'screen': ('//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css',)}
+            css={'screen': (settings.SELECT2_CSS_URL,)}
         )
 
     media = property(_get_media)

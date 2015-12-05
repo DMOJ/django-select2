@@ -47,6 +47,14 @@ class Select2Conf(AppConf):
     you can isolate select2 using the cache prefix setting.
     It has set `select2_` as a default value, which you can change if needed.
     """
+    JS_URL = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js'
+    """
+    URL to the select2 JS file. Change to use your own CDN.
+    """
+    CSS_URL = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css'
+    """
+    URL to the select2 JS file. Change to use your own CDN.
+    """
 
     class Meta:
         prefix = 'SELECT2'
