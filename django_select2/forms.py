@@ -57,6 +57,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 from django.forms.models import ModelChoiceIterator
 from django.utils.encoding import force_text
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from .cache import cache
 from .conf import settings
@@ -102,7 +103,7 @@ class Select2Mixin(object):
         """
         return forms.Media(
             js=(settings.SELECT2_JS_URL,
-                'django_select2/django_select2.js'),
+                static('django_select2/django_select2.js')),
             css={'screen': (settings.SELECT2_CSS_URL,)}
         )
 
