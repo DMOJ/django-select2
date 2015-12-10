@@ -59,7 +59,6 @@ from django.forms.models import ModelChoiceIterator
 from django.utils.encoding import force_text
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
-from .cache import cache
 from .conf import settings
 
 
@@ -173,7 +172,7 @@ class Select2TagWidget(Select2TagMixin, Select2Mixin, forms.SelectMultiple):
 
 
 class HeavySelect2Mixin(Select2Mixin):
-    """Mixin that adds select2's ajax options and registers itself on django's cache."""
+    """Mixin that adds select2's ajax options."""
 
     def __init__(self, **kwargs):
         """
@@ -215,17 +214,8 @@ class HeavySelect2Mixin(Select2Mixin):
         return attrs
 
     def render(self, name, value, attrs=None, choices=()):
-        """Render widget and register it in Django's cache."""
-        output = super(HeavySelect2Mixin, self).render(name, value, attrs=attrs, choices=choices)
-        self.set_to_cache()
-        return output
-
-    def _get_cache_key(self):
-        return "%s%s" % (settings.SELECT2_CACHE_PREFIX, id(self))
-
-    def set_to_cache(self):
-        """Add widget object to Djnago's cache."""
-        cache.set(self._get_cache_key(), self)
+        """Render widget."""
+        return super(HeavySelect2Mixin, self).render(name, value, attrs=attrs, choices=choices)
 
     def render_options(self, choices, selected_choices):
         """Render only selected options."""
@@ -240,7 +230,7 @@ class HeavySelect2Mixin(Select2Mixin):
 
 class HeavySelect2Widget(HeavySelect2Mixin, forms.Select):
     """
-    Select2 widget with AJAX support that registers itself to Django's Cache.
+    Select2 widget with AJAX support.
 
     Usage example::
 
@@ -316,24 +306,6 @@ class ModelSelect2Mixin(object):
         defaults = {'data_view': 'django_select2-json'}
         defaults.update(kwargs)
         super(ModelSelect2Mixin, self).__init__(*args, **defaults)
-
-    def set_to_cache(self):
-        """
-        Add widget's attributes to Djnago's cache.
-
-        Split the queryset, to not pickle the result set.
-        """
-        queryset = self.get_queryset()
-        cache.set(self._get_cache_key(), {
-            'queryset':
-                [
-                    queryset.none(),
-                    queryset.query,
-                ],
-            'cls': self.__class__,
-            'search_fields': self.search_fields,
-            'max_results': self.max_results,
-        })
 
     def filter_queryset(self, term, queryset=None):
         """
