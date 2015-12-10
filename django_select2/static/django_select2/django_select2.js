@@ -42,7 +42,9 @@
     };
 
     $(function () {
-        $('.django-select2').djangoSelect2();
+        $('.django-select2').djangoSelect2({
+            dropdownAutoWidth: true
+        });
     });
 
 }(this.jQuery));
