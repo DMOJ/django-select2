@@ -217,7 +217,7 @@ class HeavySelect2Mixin(Select2Mixin):
         """Render only selected options."""
         output = ['<option></option>' if not self.is_required else '']
         if isinstance(self.choices, ModelChoiceIterator):
-            self.choices.queryset = self.choices.queryset.filter(pk__in=selected_choices)
+            self.choices.queryset = self.choices.queryset.filter(pk__in=[i for i in selected_choices if isinstance(i, (int, long))])
             choices = set(self.choices)
         else:
             choices = {(k, v) for k, v in self.choices if k in selected_choices}
